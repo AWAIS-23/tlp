@@ -4,15 +4,15 @@ export default function ExperienceSection() {
   return (
     <section id="experience" className="w-full bg-[#EFE6D8] py-20 px-6 md:px-12 lg:px-20 h-screen flex flex-col justify-center">
       {/* Feature block: text left, image right */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-5xl mx-auto mb-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-5xl mx-auto mb-12">
         <div>
           <p className="text-xs tracking-[0.2em] uppercase text-[#a8916f] mb-3">
             — On How It Feels
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[#2b2823] leading-snug mb-6">
+          <h3 className="font-serif text-3xl md:text-4xl text-[#2b2823] leading-snug mb-3">
             Luxury Measured by Experience
           </h3>
-          <p className="text-sm leading-relaxed text-[#6b6558] mb-4">
+          <p className="text-sm leading-relaxed text-[#6b6558] mb-2">
             True luxury is defined not by what surrounds you, but by how a
             place makes you feel.
           </p>

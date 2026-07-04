@@ -7,15 +7,15 @@ export default function Philosophy() {
       className="w-full bg-[#EFE6D8] py-20 px-6 md:px-12 lg:px-20 flex flex-col justify-center"
     >
       {/* Hero */}
-      <div className="max-w-2xl mx-auto text-center mb-16 md:mb-24">
-        <p className="text-xs tracking-[0.25em] uppercase text-[#a8916f] mb-3">
+      <div className="max-w-2xl mx-auto text-center mb-16 md:mb-12">
+        <p className="text-xs tracking-[0.25em] uppercase text-[#a8916f] mb-1">
           The PLT Philosophy
         </p>
-        <div className="w-8 h-px bg-[#a8916f] mx-auto mb-6" />
+        <div className="w-8 h-px bg-[#a8916f] mx-auto mb-2" />
         <h2 className="font-serif text-4xl md:text-4xl leading-tight text-[#2b2823]">
           More Than Places to Live
         </h2>
-        <p className="mt-6 text-sm leading-relaxed text-[#7a7468] max-w-md mx-auto">
+        <p className="mt-4 text-sm leading-relaxed text-[#7a7468] max-w-md mx-auto">
           Creating timeless residences where Italian heritage, exceptional
           architecture, wellness, and hospitality come together to shape
           extraordinary lifestyles.
