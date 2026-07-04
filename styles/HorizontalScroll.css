@@ -1,0 +1,185 @@
+/* Horizontal Scroll Timeline Styles */
+
+.home-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.timeline-container {
+  display: flex;
+  height: 100vh;
+  width: max-content;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  will-change: transform;
+}
+
+.timeline-container > * {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Navigation Controls */
+.navigation-controls {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  gap: 16px;
+  z-index: 200;
+}
+
+.nav-control-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #1d1d1d;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-control-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.95);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nav-control-btn:active:not(:disabled) {
+  transform: scale(1.05);
+  transition: transform 0.1s ease;
+}
+
+.nav-control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nav-control-btn:focus-visible {
+  outline: 2px solid #8A3C22;
+  outline-offset: 2px;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 200;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8A3C22 0%, #C9876B 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+  animation: progressShine 2s infinite;
+}
+
+@keyframes progressShine {
+  0% { transform: translateX(-20px); }
+  100% { transform: translateX(20px); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .timeline-container {
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    position: relative;
+  }
+
+  .timeline-container > * {
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .navigation-controls {
+    display: none;
+  }
+
+  .progress-bar-container {
+    height: 3px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .nav-control-btn {
+    background: #fff;
+    border: 2px solid #000;
+  }
+  
+  .nav-control-btn:focus-visible {
+    outline: 3px solid #000;
+  }
+  
+  .progress-bar-fill {
+    background: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .nav-control-btn {
+    transition: none;
+  }
+  
+  .nav-control-btn:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .progress-bar-fill {
+    transition: none;
+  }
+  
+  .progress-bar-fill::after {
+    animation: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .nav-control-btn {
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+  }
+  
+  .nav-control-btn:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.9);
+  }
+  
+  .progress-bar-container {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

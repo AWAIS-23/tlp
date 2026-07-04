@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  --font-display: Georgia, "Times New Roman", "Iowan Old Style", serif;
+  --font-sans: -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --tan: #c9a876;
+  --rust: #b5502e;
+  --cream: #f4efe6;
+  --ink: #2a2620;
+  --dark: #17130f;
+}
+/* app/globals.css */
+@layer utilities {
+  /* Chrome, Safari और Opera के लिए */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* IE, Edge और Firefox के लिए */
+  .scrollbar-none {
+    -ms-overflow-style: none;  /* IE/Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Swiper overrides */
+.hero-swiper .swiper-pagination {
+  position: static !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0b0c;
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+}
