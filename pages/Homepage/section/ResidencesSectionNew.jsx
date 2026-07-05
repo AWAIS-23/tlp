@@ -20,7 +20,7 @@ const dnaCards = [
 
 export default function BrandDNA() {
   return (
-    <section className="w-full bg-[#EEEBE3] py-16 px-6 md:px-10 lg:px-14">
+    <section className="w-full bg-[#EEEBE3] py-23 px-6 md:px-10 ">
       {/* Heading */}
       <div className="mb-10">
         <h2 className="font-serif text-4xl md:text-5xl text-[#2b2823] tracking-tight">
@@ -39,7 +39,7 @@ export default function BrandDNA() {
         {dnaCards.map((card) => (
           <div
             key={card.title}
-            className="group relative h-[400px] md:h-[500px] overflow-hidden bg-[#1a1610]"
+            className="group relative h-[400px]  overflow-hidden bg-[#1a1610]"
           >
             {card.image ? (
               <>

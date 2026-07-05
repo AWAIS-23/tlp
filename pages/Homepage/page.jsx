@@ -199,7 +199,7 @@ export default function Homepage() {
         @media (max-width: 768px) {
           .timeline-container {
             flex-direction: column;
-            height: auto;
+            height: auto !important;
             width: 100%;
             position: relative;
             top: 0;
@@ -208,7 +208,7 @@ export default function Homepage() {
 
           .timeline-section {
             width: 100%;
-            height: 100vh;
+            height: auto ;
             min-height: 100vh;
             display: flex;
             flex-direction: column;

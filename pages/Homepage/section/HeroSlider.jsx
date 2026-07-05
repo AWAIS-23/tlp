@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
@@ -25,8 +26,32 @@ const SLIDES = [
 ];
 
 export default function HeroSlider() {
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Jab bhi Hero slider screen par dikhega, navbar text white ho jayega
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "white" }));
+        }
+      },
+      { threshold: 0.2 } // Thoda scroll hote hi register kar lega
+    );
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="home" className="relative h-screen w-full overflow-hidden bg-[#0b0b0c]">
+    <section 
+      id="home" 
+      ref={heroRef}
+      className="relative h-screen w-full overflow-hidden bg-[#0b0b0c]"
+    >
       <Swiper
         modules={[Autoplay, Pagination, EffectFade]}
         effect="fade"
@@ -44,38 +69,23 @@ export default function HeroSlider() {
       >
         {SLIDES.map((slide, i) => (
           <SwiperSlide key={i}>
-            <div className="relative h-full w-full">
+            <div className="relative h-screen w-full">
               {/* Background image */}
               <div
-                className="absolute inset-0 bg-cover bg-center slide-bg"
+                className="absolute inset-0  bg-cover bg-center slide-bg"
                 style={{ backgroundImage: `url(${slide.image})` }}
               />
               {/* Overlay for legibility */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/70" />
               <div className="absolute inset-0 bg-black/20" />
 
-              {/* Content */}
-              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 text-white">
-                <p className="font-sans text-xs sm:text-sm tracking-[0.3em] text-[var(--tan)] mb-6">
-                  {slide.eyebrow}
-                </p>
-                <h1 className="font-display text-3xl sm:text-5xl md:text-6xl leading-[1.15] max-w-4xl mb-10">
+              {/* Content - centered both horizontally and vertically */}
+              <div className="relative z-10 h-full w-full flex flex-col items-center justify-center text-center px-6 text-white mx-auto">
+             
+                <h1 className="font-display italic text-3xl sm:text-5xl md:text-6xl leading-[1.15] max-w-4xl mx-auto text-center mb-10">
                   {slide.heading}
                 </h1>
-                <div className="flex flex-col sm:flex-row items-center gap-4">
-                  <a
-                    href="#enquire"
-                    className="w-64 sm:w-auto inline-flex items-center justify-center bg-white text-[#0b0b0c] px-8 py-3.5 font-sans text-sm font-semibold tracking-[0.03em] hover:bg-white/90 transition-colors"
-                  >
-                    Register interest
-                  </a>
-                  <a
-                    href="#residences"
-                    className="w-64 sm:w-auto inline-flex items-center justify-center border border-white/70 px-8 py-3.5 font-sans text-sm tracking-[0.03em] hover:bg-white hover:text-[#0b0b0c] transition-colors"
-                  >
-                    View residences
-                  </a>
-                </div>
+               
               </div>
             </div>
           </SwiperSlide>

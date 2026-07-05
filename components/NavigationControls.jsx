@@ -13,13 +13,6 @@ const NavigationControls = memo(({
   canGoRight, 
   className = '' 
 }) => {
-  const handleKeyDown = (e, action) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      action();
-    }
-  };
-
   return (
     <div 
       className={`navigation-controls ${className}`}
@@ -28,12 +21,9 @@ const NavigationControls = memo(({
     >
       <button
         onClick={onNavigateLeft}
-        onKeyDown={(e) => handleKeyDown(e, onNavigateLeft)}
         disabled={!canGoLeft}
         className="nav-control-btn nav-control-btn--left"
         aria-label="Previous slide"
-        aria-disabled={!canGoLeft}
-        tabIndex={canGoLeft ? 0 : -1}
       >
         <svg 
           viewBox="0 0 24 24" 
@@ -55,12 +45,9 @@ const NavigationControls = memo(({
       
       <button
         onClick={onNavigateRight}
-        onKeyDown={(e) => handleKeyDown(e, onNavigateRight)}
         disabled={!canGoRight}
         className="nav-control-btn nav-control-btn--right"
         aria-label="Next slide"
-        aria-disabled={!canGoRight}
-        tabIndex={canGoRight ? 0 : -1}
       >
         <svg 
           viewBox="0 0 24 24" 

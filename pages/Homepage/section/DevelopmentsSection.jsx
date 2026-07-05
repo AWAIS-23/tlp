@@ -59,13 +59,13 @@ function BadgeTag({ label }) {
 
 export default function Developments() {
   return (
-    <section id="developments" className="w-full bg-[#EEEBE3] py-16 px-4 md:px-8 lg:px-12 min-h-screen flex flex-col justify-center">
+    <section id="developments" className="w-full bg-[#EEEBE3] py-25 px-4 md:px-10 flex flex-col justify-between">
       
       {/* Featured development */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 border border-[#d8d3c7] items-stretch min-h-[300px] overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 border border-[#d8d3c7] items-stretch min-h-[330px] overflow-hidden">
         
-        {/* Image Container */}
-        <div className="relative h-[250px] sm:h-[300px] lg:h-auto w-full overflow-hidden">
+        {/* Image Container - Height set to 250px */}
+        <div className="relative w-full overflow-hidden">
           <Image
             src={featured.image}
             alt={featured.title}
@@ -76,9 +76,9 @@ export default function Developments() {
           />
         </div>
 
-        {/* Details Container - Fixed padding and sizes */}
-        <div className="flex flex-col justify-center px-6 py-8 sm:px-10 md:px-12 lg:py-12 bg-[#EEEBE3] min-h-[300px] min-w-0">
-          <div className="flex flex-wrap gap-2 mb-4">
+        {/* Details Container */}
+        <div className="flex flex-col justify-center px-6 py-8 sm:px-10 md:px-12  bg-[#EEEBE3] min-w-0">
+          <div className="flex flex-wrap gap-2 mb-2">
             {featured.tags.map((tag) => (
               <Tag key={tag.label} label={tag.label} variant={tag.variant} />
             ))}
@@ -95,7 +95,6 @@ export default function Developments() {
             {featured.description}
           </p>
 
-          {/* Stats Grid - Responsive wrap to prevent bursting out */}
           <div className="mt-5 pt-4 border-t border-[#d8d3c7] grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-md min-w-0">
             {featured.stats.map((stat) => (
               <div key={stat.label} className="min-w-0">
@@ -119,7 +118,8 @@ export default function Developments() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         {developments.map((dev) => (
           <div key={dev.title} className="group flex flex-col">
-            <div className="relative h-[200px] overflow-hidden border border-[#d8d3c7]">
+            {/* Grid Image Container - Height set to 155px */}
+            <div className="relative h-[155px] overflow-hidden border border-[#d8d3c7]">
               <Image
                 src={dev.image}
                 alt={dev.title}

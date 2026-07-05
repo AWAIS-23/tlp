@@ -9,7 +9,7 @@ const INTRO_STATS = [
 
 export default function IntroSection() {
   return (
-    <section id="building" className="bg-[var(--cream)] text-[var(--ink)] py-24 px-6 sm:px-10 h-full flex flex-col justify-center">
+    <section id="building" className="bg-[#d9d9d9] text-[var(--ink)] py-24 px-6 sm:px-10 h-full flex flex-col justify-center">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-center mb-6">
           <span className="block h-px bg-[var(--tan)] w-16 mr-6"></span>

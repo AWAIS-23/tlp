@@ -1,6 +1,38 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 export default function ContactSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Agar contact section 30% ya usse zyada screen par dikh raha hai
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "white" }));
+        } else {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "default" }));
+        }
+      },
+      { threshold: 0.3 } // Adjust threshold if needed
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <section id="contact" className="w-full bg-[#241D18] py-20 px-6 md:px-12 lg:px-20 h-screen flex flex-col justify-center">
+    <section 
+      id="contact" 
+      ref={sectionRef}
+      className="w-full bg-[#241D18] py-20 px-6 md:px-12 lg:px-20 h-screen flex flex-col justify-center"
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 max-w-6xl mx-auto">
         {/* Left: intro + sales info */}
         <div>

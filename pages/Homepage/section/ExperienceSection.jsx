@@ -2,15 +2,15 @@ import Image from "next/image";
 
 export default function ExperienceSection() {
   return (
-    <section id="experience" className="w-full bg-[#EFE6D8] py-20 px-6 md:px-12 lg:px-20 h-screen flex flex-col justify-center">
+    <section id="experience" className="w-full bg-[#EFE6D8] py-25 px-6 md:px-10  flex flex-col justify-between">
       {/* Feature block: text left, image right */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-5xl mx-auto mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-5xl mx-auto mb-8 mt-5">
         <div>
           <p className="text-xs tracking-[0.2em] uppercase text-[#a8916f] mb-3">
             — On How It Feels
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[#2b2823] leading-snug mb-3">
-            Luxury Measured by Experience
+          <h3 className="font-serif text-3xl md:text-4xl font-light text-[#523a27] leading-snug mb-3">
+            Luxury Measured <br /> by Experience
           </h3>
           <p className="text-sm leading-relaxed text-[#6b6558] mb-2">
             True luxury is defined not by what surrounds you, but by how a
@@ -49,7 +49,7 @@ export default function ExperienceSection() {
 
       {/* Quote */}
       <div className="max-w-xl mx-auto text-center">
-        <div className="w-px h-10 bg-[#a8916f] mx-auto mb-8" />
+        <div className="w-px h-10 bg-[#a8916f] mx-auto mb-4" />
         <p className="font-serif italic text-2xl md:text-3xl text-[#2b2823] leading-snug">
           Not simply a place to live. A life to belong to.
         </p>

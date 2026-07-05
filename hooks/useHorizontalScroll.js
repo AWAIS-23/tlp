@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 /**
  * Custom hook for implementing horizontal scroll functionality
  * Converts vertical scroll to horizontal movement with smooth animations
+ * Features built-in smart snapping when scrolling stops
  */
 export const useHorizontalScroll = (options = {}) => {
   const {
@@ -12,12 +13,17 @@ export const useHorizontalScroll = (options = {}) => {
     breakpoint = 768,
     enableWheelControl = true,
     enableNavigation = true,
+    snapDelay = 1200, // Barhakar 1.2 seconds kar diya taaki jaldi snap na ho
   } = options;
 
   const containerRef = useRef(null);
   const scrollPinTrackRef = useRef(null);
   const animationRef = useRef(null);
+  const snapTimeoutRef = useRef(null); 
   
+  // Is ref mein latest targetX save rakhenge taaki timer bina kisi state dependency re-run ke chal sake
+  const targetXRef = useRef(0);
+
   const [scrollState, setScrollState] = useState({
     currentX: 0,
     targetX: 0,
@@ -36,6 +42,30 @@ export const useHorizontalScroll = (options = {}) => {
     return typeof window !== 'undefined' && window.innerWidth > breakpoint;
   }, [breakpoint]);
 
+  // Scroll to specific position
+  const scrollToPosition = useCallback((targetPosition) => {
+    if (!scrollPinTrackRef.current) return;
+    
+    const clamped = Math.max(0, Math.min(targetPosition, scrollState.maxTranslate));
+    window.scrollTo({ 
+      top: scrollPinTrackRef.current.offsetTop + clamped, 
+      behavior: 'smooth' 
+    });
+  }, [scrollState.maxTranslate]);
+
+  // Function to snap to the closest section
+  const handleScrollSnap = useCallback(() => {
+    if (!checkIsDesktop()) return;
+    
+    // Nearest Slide index calculation
+    const closestSectionIndex = Math.round(targetXRef.current / window.innerWidth);
+    const targetPosition = closestSectionIndex * window.innerWidth;
+    
+    if (Math.abs(targetXRef.current - targetPosition) > 2) {
+      scrollToPosition(targetPosition);
+    }
+  }, [checkIsDesktop, scrollToPosition]);
+
   // Calculate scroll dimensions
   const calculateSizes = useCallback(() => {
     if (!checkIsDesktop() || !containerRef.current || !scrollPinTrackRef.current) {
@@ -51,7 +81,6 @@ export const useHorizontalScroll = (options = {}) => {
     const newMaxTranslate = Math.max(0, container.scrollWidth - window.innerWidth);
     
     setScrollState(prev => {
-      // Bail out if value hasn't changed to prevent extra renders
       if (prev.maxTranslate === newMaxTranslate) return prev;
       return { ...prev, maxTranslate: newMaxTranslate };
     });
@@ -73,6 +102,9 @@ export const useHorizontalScroll = (options = {}) => {
       const newTargetX = Math.max(0, Math.min(scrolledY, prev.maxTranslate));
       const newProgress = prev.maxTranslate > 0 ? (newTargetX / prev.maxTranslate) * 100 : 0;
       
+      // Ref ko sync rakhein taaki timer accurate value uthaye
+      targetXRef.current = newTargetX;
+
       if (prev.targetX === newTargetX && prev.progress === newProgress) return prev;
       
       return {
@@ -83,7 +115,29 @@ export const useHorizontalScroll = (options = {}) => {
     });
   }, [checkIsDesktop]);
 
-  // Smooth animation loop (Now completely independent of external dependencies)
+  // --- SEPARATE SNAPPING TIMER EFFECT ---
+  // Yeh scroll listener sirf timer reset karega, bina functions ko bar bar render kiye
+  useEffect(() => {
+    if (!checkIsDesktop()) return;
+
+    const resetSnapTimer = () => {
+      if (snapTimeoutRef.current) {
+        clearTimeout(snapTimeoutRef.current);
+      }
+      
+      snapTimeoutRef.current = setTimeout(() => {
+        handleScrollSnap();
+      }, snapDelay);
+    };
+
+    window.addEventListener('scroll', resetSnapTimer);
+    return () => {
+      window.removeEventListener('scroll', resetSnapTimer);
+      if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+    };
+  }, [snapDelay, handleScrollSnap, checkIsDesktop]);
+
+  // Smooth animation loop
   const updateScrollLerp = useCallback(() => {
     if (!checkIsDesktop() || !containerRef.current) {
       animationRef.current = requestAnimationFrame(updateScrollLerp);
@@ -109,32 +163,21 @@ export const useHorizontalScroll = (options = {}) => {
     }
   }, [scrollState.currentX, checkIsDesktop]);
 
-  // Scroll to specific position
-  const scrollToPosition = useCallback((targetPosition) => {
-    if (!scrollPinTrackRef.current) return;
-    
-    const clamped = Math.max(0, Math.min(targetPosition, scrollState.maxTranslate));
-    window.scrollTo({ 
-      top: scrollPinTrackRef.current.offsetTop + clamped, 
-      behavior: 'smooth' 
-    });
-  }, [scrollState.maxTranslate]);
-
   // Navigation functions
   const scrollLeft = useCallback(() => {
-    const currentSectionIndex = Math.floor(scrollState.currentX / window.innerWidth);
+    const currentSectionIndex = Math.round(scrollState.targetX / window.innerWidth);
     const targetSectionIndex = Math.max(0, currentSectionIndex - 1);
     scrollToPosition(targetSectionIndex * window.innerWidth);
-  }, [scrollState.currentX, scrollToPosition]);
+  }, [scrollState.targetX, scrollToPosition]);
 
   const scrollRight = useCallback(() => {
-    const currentSectionIndex = Math.floor(scrollState.currentX / window.innerWidth);
+    const currentSectionIndex = Math.round(scrollState.targetX / window.innerWidth);
     const targetSectionIndex = Math.min(
       Math.floor(scrollState.maxTranslate / window.innerWidth),
       currentSectionIndex + 1
     );
     scrollToPosition(targetSectionIndex * window.innerWidth);
-  }, [scrollState.currentX, scrollState.maxTranslate, scrollToPosition]);
+  }, [scrollState.targetX, scrollState.maxTranslate, scrollToPosition]);
 
   const scrollToSection = useCallback((sectionIndex) => {
     scrollToPosition(sectionIndex * window.innerWidth);
@@ -164,7 +207,7 @@ export const useHorizontalScroll = (options = {}) => {
     });
   }, [scrollState.targetX, scrollState.maxTranslate]);
 
-  // Setup event listeners (Executes exactly ONCE on mount now)
+  // Setup event listeners
   useEffect(() => {
     setScrollState(prev => ({ ...prev, isDesktop: checkIsDesktop() }));
     calculateSizes();

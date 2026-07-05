@@ -4,7 +4,7 @@ export default function Philosophy() {
   return (
     <section
       id="philosophy"
-      className="w-full bg-[#EFE6D8] py-20 px-6 md:px-12 lg:px-20 flex flex-col justify-center"
+      className="w-full bg-[#EFE6D8] py-25 px-6 md:px-12 lg:px-20 flex flex-col justify-between"
     >
       {/* Hero */}
       <div className="max-w-2xl mx-auto text-center mb-16 md:mb-12">
@@ -12,8 +12,8 @@ export default function Philosophy() {
           The PLT Philosophy
         </p>
         <div className="w-8 h-px bg-[#a8916f] mx-auto mb-2" />
-        <h2 className="font-serif text-4xl md:text-4xl leading-tight text-[#2b2823]">
-          More Than Places to Live
+        <h2 className="font-serif text-4xl md:text-4xl leading-tight font-[300] text-[#523a27]">
+          More Than Places to <br /> Live
         </h2>
         <p className="mt-4 text-sm leading-relaxed text-[#7a7468] max-w-md mx-auto">
           Creating timeless residences where Italian heritage, exceptional
@@ -29,7 +29,7 @@ export default function Philosophy() {
             Artisanal
           </span>
 
-          {/* امیج کا سائز یہاں چھوٹا اور فکس کیا گیا ہے */}
+        
           <div className="relative aspect-[4/3] md:max-h-[350px] w-full overflow-hidden border border-[#d8d3c7]">
             <Image
               src="/images/philosophy-artisanal.jpg"
@@ -49,8 +49,8 @@ export default function Philosophy() {
           <p className="text-xs tracking-[0.2em] uppercase text-[#a8916f] mb-3">
             — On Coming Home
           </p>
-          <h3 className="font-serif text-3xl md:text-4xl text-[#2b2823] leading-snug mb-6">
-            Designed to Enrich Everyday Living
+          <h3 className="font-serif text-3xl md:text-4xl font-[300] text-[#523a27] leading-snug mb-6">
+            Designed to Enrich <br /> Everyday Living
           </h3>
           <p className="text-sm leading-relaxed text-[#6b6558] mb-4">
             Every PLT residence begins with a simple belief: exceptional
