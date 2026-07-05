@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 
 const LINKS = [
   { label: "Developments", href: "#developments" },
-  { label: "About", href: "#about" },
+  { label: "About", href: "/about-us" },
   { label: "Communities", href: "#communities" },
   { label: "Investment", href: "#investment" },
   { label: "Contact", href: "#contact" },
@@ -70,25 +71,35 @@ export default function Navbar() {
       <div className="relative flex items-center justify-between px-6 sm:px-10 py-5">
 
         {/* Brand Logo (Mobile: Always White | Desktop: Dynamic) */}
-        <a href="#home" className="leading-tight flex-shrink-0 z-10">
+        <Link href="/" className="leading-tight flex-shrink-0 z-10">
           <span className={`block font-sans text-base sm:text-lg tracking-[0.15em] font-bold text-white transition-colors duration-300 ${desktopTextColor}`}>
             PLT
           </span>
           <span className={`block font-sans text-[9px] sm:text-[10px] tracking-[0.25em] font-medium -mt-0.5 text-white/80 transition-colors duration-300 ${desktopSubTextColor}`}>
             PROPERTIES
           </span>
-        </a>
+        </Link>
 
         {/* Center: Desktop Navigation Links Only */}
         <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           {LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className={`font-sans font-medium text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 whitespace-nowrap ${desktopNavLinkColor}`}
-            >
-              {link.label}
-            </a>
+            link.href.startsWith('/') ? (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`font-sans font-medium text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 whitespace-nowrap ${desktopNavLinkColor}`}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className={`font-sans font-medium text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 whitespace-nowrap ${desktopNavLinkColor}`}
+              >
+                {link.label}
+              </a>
+            )
           ))}
         </nav>
 
@@ -125,14 +136,25 @@ export default function Navbar() {
         <div className="lg:hidden px-6 pb-8 pt-2 bg-black border-t border-white/5 animate-fadeIn">
           <nav className="flex flex-col gap-5">
             {LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="font-sans text-sm font-medium tracking-[0.15em] uppercase text-white/90 hover:text-white transition-colors py-1"
-              >
-                {link.label}
-              </a>
+              link.href.startsWith('/') ? (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="font-sans text-sm font-medium tracking-[0.15em] uppercase text-white/90 hover:text-white transition-colors py-1"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="font-sans text-sm font-medium tracking-[0.15em] uppercase text-white/90 hover:text-white transition-colors py-1"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
             
             {/* Mobile View Register Button */}
