@@ -30,7 +30,7 @@ export default function IntroSection() {
       
       </div>
         <div className="border-y border-[var(--ink)]/20 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[var(--ink)]/20">
+          <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x divide-[var(--ink)]/20">
             {INTRO_STATS.map((stat, index) => (
               <div key={index} className="text-center px-4 sm:px-6 md:px-8">
                 <p className="font-display text-2xl md:text-3xl lg:text-4xl mb-2 text-[var(--ink)]">

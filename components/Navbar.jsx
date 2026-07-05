@@ -14,9 +14,9 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeTheme, setActiveTheme] = useState("default"); // 'default' ya 'white'
+  const [activeTheme, setActiveTheme] = useState("default");
 
-  // Scroll Up Aur Down dono track karne ke liye event listener
+  // Scroll handler (Sirf desktop viewports ke liye transitions trigger karega)
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -30,7 +30,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Contact section se aane wali theme update
+  // Theme change listener
   useEffect(() => {
     const handleThemeChange = (e) => {
       setActiveTheme(e.detail);
@@ -40,69 +40,65 @@ export default function Navbar() {
     return () => window.removeEventListener("changeNavbarTheme", handleThemeChange);
   }, []);
 
-  // --- CORE CONDITION ---
   const isForceWhite = activeTheme === "white";
 
-  // 1. Navbar Main Container Background Logic
-  // Desktop par strictly transparent rahega aur scroll karne par bottom border badlega.
-  // Mobile par agar burger menu open hai (`open === true`), toh background SOLID BLACK ho jayega.
-  const headerBgClass = open
-    ? "bg-black border-b border-white/10"
+  // --- DESKTOP ONLY STYLING LOGIC ---
+  const desktopHeaderBg = isScrolled
+    ? isForceWhite
+      ? "lg:bg-transparent lg:border-b lg:border-white/10"
+      : "lg:bg-transparent lg:border-b lg:border-black/10"
+    : "lg:bg-transparent lg:border-transparent";
+
+  const desktopTextColor = isForceWhite
+    ? "lg:text-white"
+    : isScrolled ? "lg:text-black" : "lg:text-white";
+
+  const desktopSubTextColor = isForceWhite
+    ? "lg:text-white/80"
+    : isScrolled ? "lg:text-black/60" : "lg:text-white/80";
+
+  const desktopNavLinkColor = isForceWhite
+    ? "lg:text-white/90 lg:hover:text-white"
     : isScrolled
-      ? isForceWhite
-        ? "bg-transparent border-b border-white/10"
-        : "bg-transparent border-b border-black/10"
-      : "bg-transparent border-transparent";
-
-  // 2. Text Color Logic
-  // Agar mobile menu open hai, toh text hamesha white hona chahiye kyunki background black hai.
-  const textColorClass = open || isForceWhite
-    ? "text-white"
-    : isScrolled ? "text-black" : "text-white";
-
-  const subTextColorClass = open || isForceWhite
-    ? "text-white/80"
-    : isScrolled ? "text-black/60" : "text-white/80";
-
-  const navLinkColorClass = open || isForceWhite
-    ? "text-white/90 hover:text-white"
-    : isScrolled
-      ? "text-black/80 hover:text-black font-semibold"
-      : "text-white/90 hover:text-white";
+      ? "lg:text-black/80 lg:hover:text-black lg:font-semibold"
+      : "lg:text-white/90 lg:hover:text-white";
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerBgClass}`}>
-      <div className="relative flex items-center justify-between px-6 sm:px-10 py-5 transition-all duration-300 bg-black sm:bg-transparent">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-black border-b border-white/10 ${desktopHeaderBg}`}>
+      
+      {/* Main Navbar Bar */}
+      <div className="relative flex items-center justify-between px-6 sm:px-10 py-5">
 
-        {/* Left Side: Logo */}
+        {/* Brand Logo (Mobile: Always White | Desktop: Dynamic) */}
         <a href="#home" className="leading-tight flex-shrink-0 z-10">
-          <span className={`block font-sans text-base sm:text-lg tracking-[0.15em] font-bold transition-colors duration-300 ${textColorClass}`}>
+          <span className={`block font-sans text-base sm:text-lg tracking-[0.15em] font-bold text-white transition-colors duration-300 ${desktopTextColor}`}>
             PLT
           </span>
-          <span className={`block font-sans text-[9px] sm:text-[10px] tracking-[0.25em] font-medium -mt-0.5 transition-colors duration-300 ${subTextColorClass}`}>
+          <span className={`block font-sans text-[9px] sm:text-[10px] tracking-[0.25em] font-medium -mt-0.5 text-white/80 transition-colors duration-300 ${desktopSubTextColor}`}>
             PROPERTIES
           </span>
         </a>
 
-        {/* Center: Desktop nav links */}
+        {/* Center: Desktop Navigation Links Only */}
         <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           {LINKS.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className={`font-sans font-medium text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 whitespace-nowrap ${navLinkColorClass}`}
+              className={`font-sans font-medium text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 whitespace-nowrap ${desktopNavLinkColor}`}
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        {/* Right Side: Button + Burger */}
+        {/* Right Side: Action Button + Mobile Burger Menu */}
         <div className="flex items-center gap-4 flex-shrink-0 z-10">
+          {/* Register Interest Button (Desktop Dynamic Style) */}
           <a
             href="#enquire"
-            className={`hidden sm:inline-flex items-center px-6 py-2.5 font-sans text-[11px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 ${
-              open || isForceWhite
+            className={`hidden lg:inline-flex items-center px-6 py-2.5 font-sans text-[11px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 ${
+              isForceWhite
                 ? "border border-white text-white hover:bg-white hover:text-black"
                 : isScrolled
                   ? "border border-black text-black hover:bg-black hover:text-white"
@@ -111,10 +107,12 @@ export default function Navbar() {
           >
             Register Interest
           </a>
+
+          {/* Toggle Button (Mobile ke liye hamesha white aur clickable) */}
           <button
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
-            className={`lg:hidden p-2 transition-colors duration-300 ${textColorClass}`}
+            className="lg:hidden p-2 text-white hover:text-white/80 transition-colors duration-300"
           >
             {open ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -122,24 +120,26 @@ export default function Navbar() {
 
       </div>
 
-      {/* Mobile menu dropdown - Yeh solid black background ke saath niche expand hoga */}
+      {/* --- MOBILE DROPDOWN NAVIGATION --- */}
       {open && (
-        <div className="lg:hidden px-6 py-8 transition-colors duration-300 bg-black">
-          <nav className="flex flex-col gap-6">
+        <div className="lg:hidden px-6 pb-8 pt-2 bg-black border-t border-white/5 animate-fadeIn">
+          <nav className="flex flex-col gap-5">
             {LINKS.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="font-sans text-sm font-medium tracking-[0.15em] uppercase transition-colors duration-300 text-white/90"
+                className="font-sans text-sm font-medium tracking-[0.15em] uppercase text-white/90 hover:text-white transition-colors py-1"
               >
                 {link.label}
               </a>
             ))}
+            
+            {/* Mobile View Register Button */}
             <a
               href="#enquire"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center justify-center px-6 py-3 border font-sans text-xs font-semibold tracking-[0.2em] uppercase mt-2 transition-all duration-300 bg-transparent border-white text-white hover:bg-white hover:text-black"
+              className="inline-flex items-center justify-center px-6 py-3 border font-sans text-xs font-semibold tracking-[0.2em] uppercase mt-4 bg-white text-black hover:bg-transparent hover:text-white hover:border-white transition-all duration-300"
             >
               Register Interest
             </a>

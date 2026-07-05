@@ -59,7 +59,7 @@ function BadgeTag({ label }) {
 
 export default function Developments() {
   return (
-    <section id="developments" className="w-full bg-[#EEEBE3] py-25 px-4 md:px-10 flex flex-col justify-between">
+    <section id="developments" className="w-full bg-[#EEEBE3] md:py-25 px-4 md:px-10 flex flex-col justify-between">
       
       {/* Featured development */}
       <div className="grid grid-cols-1 lg:grid-cols-2 border border-[#d8d3c7] items-stretch min-h-[330px] overflow-hidden">
