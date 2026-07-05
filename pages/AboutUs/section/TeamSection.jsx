@@ -1,6 +1,27 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 export default function TeamSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const team = [
     {
       name: "Ahmed Al-Rashid",
@@ -26,17 +47,17 @@ export default function TeamSection() {
 
   return (
     <section 
-      className="w-full bg-[#241D18] h-screen flex items-center justify-center px-6 md:px-12 lg:px-20"
+      className="w-full bg-[#d9d9d9] text-[var(--ink)] h-screen flex items-center justify-center px-6 md:px-12 lg:px-20"
     >
       <div className="max-w-6xl mx-auto w-full">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-[0.2em] uppercase text-[#B08D57] mb-4">
+          <p className="font-sans text-xs tracking-[0.25em] text-[var(--tan)] mb-4">
             — Leadership Team
           </p>
-          <h2 className="font-serif text-4xl text-white leading-tight mb-4">
+          <h2 className="font-display text-4xl leading-tight mb-4">
             Meet Our Visionaries
           </h2>
-          <p className="text-white/60 max-w-2xl mx-auto">
+          <p className="font-sans text-sm text-[var(--ink)]/80 max-w-2xl mx-auto">
             A team of experienced professionals dedicated to shaping Dubai's skyline 
             with excellence and innovation.
           </p>
@@ -56,8 +77,8 @@ export default function TeamSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="font-serif text-lg text-white mb-1">{member.name}</h3>
-                  <p className="text-[#B08D57] text-sm">{member.role}</p>
+                  <h3 className="font-display text-lg text-white mb-1">{member.name}</h3>
+                  <p className="text-[var(--tan)] text-sm">{member.role}</p>
                 </div>
               </div>
             </div>

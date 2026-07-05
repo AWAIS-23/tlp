@@ -1,8 +1,30 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 export default function ExperienceSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="experience" className="w-full bg-[#EFE6D8] py-25 px-6 md:px-10  flex flex-col justify-between">
+    <section id="experience" ref={sectionRef} className="w-full bg-[#d9d9d9] py-25 px-6 md:px-10  flex flex-col justify-between">
       {/* Feature block: text left, image right */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-5xl mx-auto mb-8 mt-5">
         <div>

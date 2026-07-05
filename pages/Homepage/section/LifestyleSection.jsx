@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 
 const AMENITIES = [
@@ -15,9 +15,27 @@ const AMENITIES = [
 
 export default function LifestyleSection() {
   const [active, setActive] = useState(0);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="lifestyle" className="bg-[var(--cream)] text-[var(--ink)] py-24 px-6 sm:px-10">
+    <section id="lifestyle" ref={sectionRef} className="bg-[#d9d9d9] text-[var(--ink)] py-24 px-6 sm:px-10">
       <div className="max-w-6xl mx-auto">
         <p className="font-sans text-xs tracking-[0.25em] text-[var(--tan)] mb-4">
           LIFESTYLE &amp; AMENITIES

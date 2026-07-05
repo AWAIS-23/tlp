@@ -1,10 +1,33 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 export default function Philosophy() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       id="philosophy"
-      className="w-full bg-[#EFE6D8] py-25 px-6 md:px-12 lg:px-20 flex flex-col justify-between"
+      ref={sectionRef}
+      className="w-full bg-[#d9d9d9] py-25 px-6 md:px-12 lg:px-20 flex flex-col justify-between"
     >
       {/* Hero */}
       <div className="max-w-2xl mx-auto text-center mb-16 md:mb-12">
@@ -13,9 +36,9 @@ export default function Philosophy() {
         </p>
         <div className="w-8 h-px bg-[#a8916f] mx-auto mb-2" />
         <h2 className="font-serif text-4xl md:text-4xl leading-tight font-[300] text-[#523a27]">
-          More Than Places to <br /> Live
+          More Than Places to Live
         </h2>
-        <p className="mt-4 text-sm leading-relaxed text-[#7a7468] max-w-md mx-auto">
+        <p className="mt-4 text-sm leading-relaxed text-[#7a7468]  mx-auto">
           Creating timeless residences where Italian heritage, exceptional
           architecture, wellness, and hospitality come together to shape
           extraordinary lifestyles.

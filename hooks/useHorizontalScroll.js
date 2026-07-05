@@ -85,7 +85,7 @@ export const useHorizontalScroll = (options = {}) => {
       return { ...prev, maxTranslate: newMaxTranslate };
     });
     
-    track.style.height = `${newMaxTranslate + window.innerHeight}px`;
+    track.style.height = `${newMaxTranslate + window.innerHeight * 2}px`;
   }, [checkIsDesktop]);
 
   // Read scroll position from vertical scroll

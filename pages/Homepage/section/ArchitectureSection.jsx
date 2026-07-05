@@ -16,8 +16,27 @@ const MATERIALS = [
 ];
 
 export default function ArchitectureSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="bg-[var(--dark)] text-white">
+    <section ref={sectionRef} className="bg-[#d9d9d9] text-[var(--ink)]">
       <ImagePlaceholder
         variant="night"
         label="Tower under construction, Business Bay"
@@ -44,7 +63,7 @@ export default function ArchitectureSection() {
               to be there. The result: a silhouette that stands apart
               precisely because it doesn&apos;t try to.
             </p>
-            <p className="font-sans text-xs leading-relaxed text-white/40">
+            <p className="font-sans text-xs leading-relaxed text-[var(--ink)]/40">
               Floor-to-ceiling glazing on all primary residences. Deep-set
               balconies that frame the canal. A ground-floor arrival sequence
               that takes its time.
@@ -71,7 +90,7 @@ export default function ArchitectureSection() {
               <p className="font-display italic text-[var(--tan)] text-lg mb-2">
                 {m.title}
               </p>
-              <p className="font-sans text-xs leading-relaxed text-white/50">
+              <p className="font-sans text-xs leading-relaxed text-[var(--ink)]/50">
                 {m.copy}
               </p>
             </div>

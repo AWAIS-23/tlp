@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 
 const INTRO_STATS = [
@@ -8,8 +11,27 @@ const INTRO_STATS = [
 ];
 
 export default function IntroSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="building" className="bg-[#d9d9d9] text-[var(--ink)] py-24 px-6 sm:px-10 h-full flex flex-col justify-center">
+    <section id="building" ref={sectionRef} className="bg-[#d9d9d9] text-[var(--ink)] py-24 px-6 sm:px-10 h-full flex flex-col justify-center">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-center mb-6">
           <span className="block h-px bg-[var(--tan)] w-16 mr-6"></span>

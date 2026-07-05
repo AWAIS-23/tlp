@@ -33,8 +33,27 @@ const UNITS = [
 ];
 
 export default function ResidencesSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="residences" className="bg-[var(--cream)] text-[var(--ink)] py-24 px-6 sm:px-10">
+    <section id="residences" ref={sectionRef} className="bg-[#d9d9d9] text-[var(--ink)] py-24 px-6 sm:px-10">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
           <div>

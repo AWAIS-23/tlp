@@ -1,6 +1,27 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 export default function AchievementsSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const achievements = [
     {
       number: "15+",
@@ -36,17 +57,17 @@ export default function AchievementsSection() {
 
   return (
     <section 
-      className="w-full bg-[#0b0b0c] h-screen flex items-center justify-center px-6 md:px-12 lg:px-20"
+      className="w-full bg-[#d9d9d9] text-[var(--ink)] h-screen flex items-center justify-center px-6 md:px-12 lg:px-20"
     >
       <div className="max-w-6xl mx-auto w-full">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-[0.2em] uppercase text-[#B08D57] mb-4">
+          <p className="font-sans text-xs tracking-[0.25em] text-[var(--tan)] mb-4">
             — Our Achievements
           </p>
-          <h2 className="font-serif text-4xl text-white leading-tight mb-4">
+          <h2 className="font-display text-4xl leading-tight mb-4">
             Numbers That Speak
           </h2>
-          <p className="text-white/60 max-w-2xl mx-auto">
+          <p className="font-sans text-sm text-[var(--ink)]/80 max-w-2xl mx-auto">
             Our track record of success is a testament to our commitment to excellence 
             and customer satisfaction.
           </p>
@@ -56,11 +77,11 @@ export default function AchievementsSection() {
           {achievements.map((achievement, index) => (
             <div 
               key={index}
-              className="text-center p-6 bg-[#1a1a1a] rounded-lg border border-white/10 hover:border-[#B08D57]/50 transition-colors"
+              className="text-center p-6 bg-white rounded-lg border border-[var(--ink)]/10 hover:border-[var(--tan)]/50 transition-colors"
             >
-              <p className="text-5xl font-serif text-[#B08D57] mb-2">{achievement.number}</p>
-              <h3 className="font-serif text-xl text-white mb-2">{achievement.label}</h3>
-              <p className="text-white/50 text-sm">{achievement.description}</p>
+              <p className="font-display text-5xl text-[var(--tan)] mb-2">{achievement.number}</p>
+              <h3 className="font-display text-xl mb-2">{achievement.label}</h3>
+              <p className="font-sans text-sm text-[var(--ink)]/70">{achievement.description}</p>
             </div>
           ))}
         </div>

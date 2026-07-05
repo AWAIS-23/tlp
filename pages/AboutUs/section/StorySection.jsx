@@ -1,9 +1,31 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 export default function StorySection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
-      className="w-full bg-[#0b0b0c] h-screen flex items-center justify-center px-6 md:px-12 lg:px-20"
+      ref={sectionRef}
+      className="w-full bg-[#d9d9d9] text-[var(--ink)] h-screen flex items-center justify-center px-6 md:px-12 lg:px-20"
     >
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left: Image */}
@@ -15,18 +37,18 @@ export default function StorySection() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute -bottom-6 -right-6 w-32 h-32 border border-[#B08D57] rounded-lg" />
+          <div className="absolute -bottom-6 -right-6 w-32 h-32 border border-[var(--tan)] rounded-lg" />
         </div>
 
         {/* Right: Content */}
         <div>
-          <p className="text-xs tracking-[0.2em] uppercase text-[#B08D57] mb-4">
+          <p className="font-sans text-xs tracking-[0.25em] text-[var(--tan)] mb-4">
             — Our Story
           </p>
-          <h2 className="font-serif text-4xl text-white leading-tight mb-6">
+          <h2 className="font-display text-4xl leading-tight mb-6">
             A Legacy of Excellence
           </h2>
-          <div className="space-y-4 text-white/60 leading-relaxed">
+          <div className="space-y-4 font-sans text-sm leading-relaxed text-[var(--ink)]/80">
             <p>
               Founded with a vision to transform Dubai's real estate landscape, 
               PLT Properties has been at the forefront of luxury development for over a decade.
@@ -44,12 +66,12 @@ export default function StorySection() {
 
           <div className="mt-8 grid grid-cols-2 gap-8">
             <div>
-              <p className="text-4xl font-serif text-[#B08D57] mb-2">15+</p>
-              <p className="text-white/50 text-sm">Years of Excellence</p>
+              <p className="font-display text-4xl text-[var(--tan)] mb-2">15+</p>
+              <p className="font-sans text-sm text-[var(--ink)]/60">Years of Excellence</p>
             </div>
             <div>
-              <p className="text-4xl font-serif text-[#B08D57] mb-2">50+</p>
-              <p className="text-white/50 text-sm">Projects Delivered</p>
+              <p className="font-display text-4xl text-[var(--tan)] mb-2">50+</p>
+              <p className="font-sans text-sm text-[var(--ink)]/60">Projects Delivered</p>
             </div>
           </div>
         </div>

@@ -19,8 +19,27 @@ const PROTECTIONS = [
 ];
 
 export default function InvestmentSection() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="investment" className="bg-[var(--dark)] text-white py-24 px-6 sm:px-10">
+    <section id="investment" ref={sectionRef} className="bg-[#d9d9d9] text-[var(--ink)] py-24 px-6 sm:px-10">
       <div className="max-w-6xl mx-auto">
         <p className="font-sans text-xs tracking-[0.25em] text-[var(--tan)] mb-4">
           INVESTMENT
@@ -30,7 +49,7 @@ export default function InvestmentSection() {
             A considered position in one of the world&apos;s most resilient
             property markets
           </h2>
-          <p className="font-sans text-sm leading-relaxed text-white/55 self-end">
+          <p className="font-sans text-sm leading-relaxed text-[var(--ink)]/70 self-end">
             Business Bay has consistently outperformed Dubai&apos;s wider
             market over the past decade. PLT Tower offers a structured entry
             into that trajectory, with a payment plan designed to reduce
@@ -42,13 +61,13 @@ export default function InvestmentSection() {
           {STATS.map((s, i) => (
             <div
               key={s.label}
-              className={`p-6 ${i !== 0 ? "border-l border-white/10" : ""}`}
+              className={`p-6 ${i !== 0 ? "border-l border-[var(--ink)]/10" : ""}`}
             >
-              <p className="font-display text-2xl sm:text-3xl text-[#8fb3c9] mb-2">
+              <p className="font-display text-2xl sm:text-3xl text-[#8fb3c9b-2">
                 {s.value}
               </p>
-              <p className="font-sans text-xs text-white/70 mb-1">{s.label}</p>
-              <p className="font-sans text-[10px] text-white/35">{s.sub}</p>
+              <p className="font-sans text-xs text-[var(--ink)]/70 mb-1">{s.label}</p>
+              <p className="font-sans text-[10px] text-[var(--ink)]/35">{s.sub}</p>
             </div>
           ))}
         </div>
@@ -61,7 +80,7 @@ export default function InvestmentSection() {
             <div className="space-y-6 mb-6">
               {PAYMENT.map((p) => (
                 <div key={p.stage} className="flex items-center justify-between">
-                  <span className="font-sans text-sm text-white/75">
+                  <span className="font-sans text-sm text-[var(--ink)]/75">
                     {p.stage}
                   </span>
                   <span className="font-display text-lg">{p.pct}%</span>
@@ -72,8 +91,8 @@ export default function InvestmentSection() {
               <div className="h-[3px] bg-white w-1/3" />
             </div>
             <div className="flex justify-between mt-2">
-              <span className="font-sans text-[10px] text-white/35">Now</span>
-              <span className="font-sans text-[10px] text-white/35">
+              <span className="font-sans text-[10px] text-[var(--ink)]/35">Now</span>
+              <span className="font-sans text-[10px] text-[var(--ink)]/35">
                 Q4 2027
               </span>
             </div>
@@ -83,7 +102,7 @@ export default function InvestmentSection() {
             <p className="font-sans text-[11px] tracking-[0.2em] text-[var(--tan)] mb-8 uppercase">
               Buyer protection
             </p>
-            <div className="border border-white/10 p-6">
+            <div className="border border-[var(--ink)]/10 p-6">
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-2 h-2 rounded-full border border-[#8fb3c9]" />
                 <p className="font-display text-[#8fb3c9] text-sm">
@@ -102,7 +121,7 @@ export default function InvestmentSection() {
                     key={p}
                     className="font-sans text-xs text-white/60 flex items-start gap-2"
                   >
-                    <span className="mt-1.5 w-1 h-1 rounded-full bg-white/40 shrink-0" />
+                    <span className="mt-1.5 w-1 h-1 rounded-full bg-[var(--ink)]/40 shrink-0" />
                     {p}
                   </li>
                 ))}

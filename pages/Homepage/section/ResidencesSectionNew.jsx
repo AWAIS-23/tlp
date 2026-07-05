@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 const dnaCards = [
@@ -19,8 +22,27 @@ const dnaCards = [
 ];
 
 export default function BrandDNA() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="w-full bg-[#EEEBE3] py-23 px-6 md:px-10 ">
+    <section ref={sectionRef} className="w-full bg-[#d9d9d9] py-23 px-6 md:px-10 ">
       {/* Heading */}
       <div className="mb-10">
         <h2 className="font-serif text-4xl md:text-5xl text-[#2b2823] tracking-tight">

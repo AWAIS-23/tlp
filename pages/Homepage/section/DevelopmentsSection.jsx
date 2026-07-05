@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 const featured = {
@@ -58,8 +61,27 @@ function BadgeTag({ label }) {
 }
 
 export default function Developments() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "light" }));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="developments" className="w-full bg-[#EEEBE3] md:py-25 px-4 md:px-10 flex flex-col justify-between">
+    <section id="developments" ref={sectionRef} className="w-full bg-[#d9d9d9] md:py-25 px-4 md:px-10 flex flex-col justify-between">
       
       {/* Featured development */}
       <div className="grid grid-cols-1 lg:grid-cols-2 border border-[#d8d3c7] items-stretch min-h-[330px] overflow-hidden">
@@ -77,7 +99,7 @@ export default function Developments() {
         </div>
 
         {/* Details Container */}
-        <div className="flex flex-col justify-center px-6 py-8 sm:px-10 md:px-12  bg-[#EEEBE3] min-w-0">
+        <div className="flex flex-col justify-center px-6 py-8 sm:px-10 md:px-12  bg-[#d9d9d9] min-w-0">
           <div className="flex flex-wrap gap-2 mb-2">
             {featured.tags.map((tag) => (
               <Tag key={tag.label} label={tag.label} variant={tag.variant} />

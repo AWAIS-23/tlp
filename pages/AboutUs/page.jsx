@@ -6,7 +6,6 @@ import ProgressBar from '@/components/ProgressBar';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import '@/styles/HorizontalScroll.css';
-import { useEffect } from 'react';
 
 // Import About Us sections
 import HeroSection from './section/HeroSection';
@@ -22,13 +21,6 @@ import ContactSection from './section/ContactSection';
  * Following the same pattern as Homepage
  */
 export default function AboutUs() {
-  // Set navbar theme to white for About Us page
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent('changeNavbarTheme', { detail: 'white' }));
-    return () => {
-      window.dispatchEvent(new CustomEvent('changeNavbarTheme', { detail: 'default' }));
-    };
-  }, []);
   const {
     containerRef,
     scrollPinTrackRef,
@@ -128,7 +120,6 @@ export default function AboutUs() {
           right: 0;
           z-index: 1000;
           background: transparent;
-          color:white !important;
         }
 
         .aboutus-scroll-wrapper {

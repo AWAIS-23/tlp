@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 function Instagram(props) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" {...props}>
@@ -50,8 +52,29 @@ const TOPICS = [
 ];
 
 export default function Footer() {
+  const footerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "white" }));
+        } else {
+          window.dispatchEvent(new CustomEvent("changeNavbarTheme", { detail: "default" }));
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <footer className="bg-[var(--dark)] text-white pt-16 pb-6 px-6 sm:px-10">
+    <footer ref={footerRef} className="bg-[var(--dark)] text-white pt-16 pb-6 px-6 sm:px-10">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
@@ -63,8 +86,7 @@ export default function Footer() {
               BY PLT PROPERTIES
             </p>
             <p className="font-sans text-xs leading-relaxed text-white/45">
-              A European developer&apos;s first address in Dubai. Business
-              Bay, 2027.
+              A European developer&apos;s first address in Dubai. Business Bay, 2027.
             </p>
           </div>
 
